@@ -9,7 +9,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $tracks = Track::all();
+        $tracks = Track::with('fields')->get();
+
         return Inertia::render('Home', [
             'tracks' => $tracks,
         ]);

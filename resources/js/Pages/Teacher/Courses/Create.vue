@@ -1,49 +1,51 @@
 <template>
   <div>
-    <h1 class="text-2xl font-bold mb-4">Your Courses</h1>
-    <Link href="/courses/create" class="mb-4 inline-block bg-blue-500 text-white px-4 py-2 rounded">Create New Course</Link>
-    <table class="min-w-full bg-white">
-      <thead>
-        <tr>
-          <th class="py-2">Name</th>
-          <th class="py-2">Field</th>
-          <th class="py-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="course in courses" :key="course.id">
-          <td class="py-2">{{ course.name }}</td>
-          <td class="py-2">{{ course.field.name }}</td>
-          <td class="py-2">
-            <Link :href="`/courses/${course.id}/edit`" class="text-blue-500">Edit</Link>
-            <form :action="`/courses/${course.id}`" method="POST" @submit.prevent="destroy(course.id)" style="display:inline;">
-              <input type="hidden" name="_method" value="DELETE">
-              <button type="submit" class="text-red-500 ml-2">Delete</button>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <h1 class="text-2xl font-bold mb-4">Create New Course</h1>
+    <form @submit.prevent="submit">
+      <div>
+        <label for="name">Course Name</label>
+        <input v-model="form.name" type="text" id="name" class="border rounded px-2 py-1">
+        <div v-if="errors.name" class="text-red-500">{{ errors.name }}</div>
+      </div>
+      <div>
+        <label for="field_id">Field</label>
+        <select v-model="form.field_id" id="field_id" class="border rounded px-2 py-1">
+          <option value="" disabled>Select Field</option>
+          <option v-for="field in fields" :key="field.id" :value="field.id">
+            {{ field.name }}
+          </option>
+        </select>
+        <div v-if="errors.field_id" class="text-red-500">{{ errors.field_id }}</div>
+      </div>
+      <div>
+        <label for="description">Description</label>
+        <textarea v-model="form.description" id="description" class="border rounded px-2 py-1"></textarea>
+        <div v-if="errors.description" class="text-red-500">{{ errors.description }}</div>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create Course</button>
+    </form>
   </div>
 </template>
 
 <script>
-import { Link, useForm } from '@inertiajs/inertia-vue3';
+import { useForm } from '@inertiajs/inertia-vue3';
 
 export default {
   props: {
-    courses: Array,
-  },
-  components: {
-    Link,
+    fields: Array,
   },
   setup() {
-    const destroy = (id) => {
-      if (confirm('Are you sure you want to delete this course?')) {
-        useForm().delete(`/courses/${id}`);
-      }
+    const form = useForm({
+      name: '',
+      field_id: '',
+      description: '',
+    });
+
+    const submit = () => {
+      form.post('/courses');
     };
-    return { destroy };
+
+    return { form, submit };
   },
 };
 </script>
