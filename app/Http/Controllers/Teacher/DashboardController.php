@@ -10,7 +10,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $courses = auth()->user()->courses()->with('field')->get();
+        // Fetch courses created by the authenticated teacher
+        $courses = Course::where('user_id', auth()->id())->with('field')->get();
+
         return Inertia::render('Teacher/Dashboard', [
             'courses' => $courses,
         ]);
