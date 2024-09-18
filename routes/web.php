@@ -1,6 +1,16 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Teacher\DashboardController;
+use App\Http\Controllers\Teacher\CourseController as TeacherCourseController;
+use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
+
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TrackController;
+use App\Http\Controllers\FieldController;
+use App\Http\Controllers\CourseController as StudentCourseController;
+use App\Http\Controllers\LessonController as StudentLessonController;
+
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -9,34 +19,43 @@ use Inertia\Inertia;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Landing page
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Student routes
+Route::get('/tracks/{track}', [TrackController::class, 'show'])->name('tracks.show');
+Route::get('/fields/{field}', [FieldController::class, 'show'])->name('fields.show');
+Route::get('/courses/{course}', [StudentCourseController::class, 'show'])->name('courses.show');
+Route::get('/lessons/{lesson}', [StudentLessonController::class, 'show'])->name('lessons.show');
 
+// Dashboard route
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+// Authenticated routes
 Route::middleware('auth')->group(function () {
+    // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Teacher routes (accessible only to users with 'teacher' role)
+Route::middleware(['auth', 'teacher'])->group(function () {
+    // Courses
+    Route::resource('courses', TeacherCourseController::class);
+
+    // Lessons
+    Route::resource('lessons', TeacherLessonController::class);
+});
+
+// Admin routes (if applicable)
 Route::middleware(['auth', 'admin'])->group(function () {
     // Admin routes here
 });
 
-require __DIR__.'/auth.php';
+// Authentication routes
+require __DIR__ . '/auth.php';
