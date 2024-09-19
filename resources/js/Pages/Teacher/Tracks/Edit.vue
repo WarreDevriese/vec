@@ -38,8 +38,10 @@
 
 <script>
 import { useForm } from '@inertiajs/inertia-vue3';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
 
 export default {
+    layout: TeacherLayout,
   props: {
     track: Object,
   },

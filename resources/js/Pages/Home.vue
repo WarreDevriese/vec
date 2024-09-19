@@ -19,6 +19,7 @@
 
 <script>
 import { Link } from '@inertiajs/inertia-vue3';
+import MainLayout from '@/Layouts/MainLayout.vue';
 
 export default {
   props: {

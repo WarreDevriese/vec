@@ -44,8 +44,10 @@
 <script>
 import { Link, usePage } from '@inertiajs/inertia-vue3';
 import { Inertia } from '@inertiajs/inertia';
+import TeacherLayout from '@/Layouts/TeacherLayout.vue';
 
 export default {
+    layout: TeacherLayout,
   props: {
     courses: Array,
   },
