@@ -1,12 +1,26 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">{{ lesson.title }}</h1>
-    <div v-if="lesson.video_url || lesson.video_path" class="mb-4">
-      <video v-if="lesson.video_url" :src="lesson.video_url" controls class="w-full"></video>
-      <video v-else :src="`/storage/${lesson.video_path}`" controls class="w-full"></video>
+  <div class="container mx-auto px-4 py-6">
+    <div class="mb-4">
+      <Link :href="`/courses/${lesson.course.id}`" class="text-blue-500 hover:underline">&larr; Back to Course</Link>
     </div>
-    <div v-html="lesson.text_content" class="prose"></div>
-    <Link :href="route('courses.show', lesson.course_id)" class="text-gray-500 hover:underline mt-4 inline-block">Back to Course</Link>
+
+    <h1 class="text-3xl font-bold mb-4">{{ lesson.title }}</h1>
+    <p class="text-gray-700 mb-6">{{ lesson.text_content }}</p>
+    <p class="text-gray-600 mb-6">Course: {{ lesson.course.name }}</p>
+
+    <div v-if="lesson.video_url" class="mb-6">
+      <h2 class="text-2xl font-semibold mb-2">Video Content</h2>
+      <iframe
+        :src="embedUrl"
+        class="w-full h-64"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <div v-else class="text-gray-500">
+      No video content available for this lesson.
+    </div>
   </div>
 </template>
 
@@ -17,13 +31,31 @@ export default {
   props: {
     lesson: Object,
   },
+  computed: {
+    embedUrl() {
+      // Convert YouTube URL to embed URL if applicable
+      const url = new URL(this.lesson.video_url);
+      if (url.hostname.includes('youtube.com') || url.hostname.includes('youtu.be')) {
+        let videoId = '';
+        if (url.hostname.includes('youtube.com')) {
+          videoId = url.searchParams.get('v');
+        } else if (url.hostname.includes('youtu.be')) {
+          videoId = url.pathname.slice(1);
+        }
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+      // Return original URL if not a YouTube link
+      return this.lesson.video_url;
+    },
+  },
   components: {
     Link,
   },
 };
 </script>
 
-<style>
-/* Optional: Use Tailwind CSS Typography plugin for styling text content */
-@import 'https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.4.1/dist/typography.min.css';
+<style scoped>
+iframe {
+  border: none;
+}
 </style>
