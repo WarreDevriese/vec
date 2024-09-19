@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Track;
 
 class TrackSeeder extends Seeder
 {
@@ -12,6 +12,14 @@ class TrackSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Track::create([
+            'name' => 'Science',
+            'description' => 'Science Track',
+        ]);
+
+        Track::create([
+            'name' => 'Arts',
+            'description' => 'Arts Track',
+        ]);
     }
 }

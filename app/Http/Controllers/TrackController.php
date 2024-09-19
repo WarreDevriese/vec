@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Track;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TrackController extends Controller
 {
-    public function show(\App\Models\Track $track)
+    // Show the form to create a new track
+    public function create()
     {
-        $track->load('fields');
+        return Inertia::render('Tracks/Create');
+    }
 
-        return \Inertia\Inertia::render('Tracks/Show', [
-            'track' => $track,
+    // Store the new track in the database
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
         ]);
+
+        Track::create($validated);
+
+        return redirect()->route('home')->with('success', 'Track created successfully.');
     }
 }

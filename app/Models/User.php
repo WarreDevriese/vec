@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    // Define role constants for consistency and to avoid typos
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_TEACHER = 'teacher';
+    public const ROLE_STUDENT = 'student';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,5 +56,15 @@ class User extends Authenticatable
     public function isTeacher()
     {
         return $this->role === 'teacher';
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function lessons()
+    {
+        return $this->hasManyThrough(Lesson::class, Course::class);
     }
 }

@@ -1,39 +1,71 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-bold mb-4">Edit Lesson</h1>
+  <div class="container mx-auto px-4 py-6">
+    <h1 class="text-3xl font-bold mb-6">Edit Lesson</h1>
+
     <form @submit.prevent="submit">
-      <div>
-        <label for="title">Lesson Title</label>
-        <input v-model="form.title" type="text" id="title" class="border rounded px-2 py-1">
-        <div v-if="form.errors.title" class="text-red-500">{{ form.errors.title }}</div>
+      <div class="mb-4">
+        <label for="title" class="block text-gray-700">Lesson Title</label>
+        <input
+          v-model="form.title"
+          type="text"
+          id="title"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+          required
+        />
+        <span v-if="form.errors.title" class="text-red-500 text-sm">{{ form.errors.title }}</span>
       </div>
-      <div>
-        <label for="course_id">Course</label>
-        <select v-model="form.course_id" id="course_id" class="border rounded px-2 py-1">
-          <option value="" disabled>Select Course</option>
+
+      <div class="mb-4">
+        <label for="course_id" class="block text-gray-700">Course</label>
+        <select
+          v-model="form.course_id"
+          id="course_id"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+          required
+        >
+          <option value="" disabled>Select a Course</option>
           <option v-for="course in courses" :key="course.id" :value="course.id">
             {{ course.name }}
           </option>
         </select>
-        <div v-if="form.errors.course_id" class="text-red-500">{{ form.errors.course_id }}</div>
+        <span v-if="form.errors.course_id" class="text-red-500 text-sm">{{ form.errors.course_id }}</span>
       </div>
-      <div>
-        <label for="video_url">Video URL</label>
-        <input v-model="form.video_url" type="url" id="video_url" class="border rounded px-2 py-1">
-        <div v-if="form.errors.video_url" class="text-red-500">{{ form.errors.video_url }}</div>
+
+      <div class="mb-4">
+        <label for="text_content" class="block text-gray-700">Text Content</label>
+        <textarea
+          v-model="form.text_content"
+          id="text_content"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+          rows="6"
+        ></textarea>
+        <span v-if="form.errors.text_content" class="text-red-500 text-sm">{{ form.errors.text_content }}</span>
       </div>
-      <div>
-        <label for="text_content">Content</label>
-        <textarea v-model="form.text_content" id="text_content" class="border rounded px-2 py-1"></textarea>
-        <div v-if="form.errors.text_content" class="text-red-500">{{ form.errors.text_content }}</div>
+
+      <div class="mb-4">
+        <label for="video_url" class="block text-gray-700">Video URL</label>
+        <input
+          v-model="form.video_url"
+          type="url"
+          id="video_url"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+        />
+        <span v-if="form.errors.video_url" class="text-red-500 text-sm">{{ form.errors.video_url }}</span>
       </div>
-      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Lesson</button>
+
+      <button
+        type="submit"
+        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
+      >
+        Update Lesson
+      </button>
     </form>
   </div>
 </template>
 
 <script>
 import { useForm } from '@inertiajs/inertia-vue3';
+import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
   props: {
@@ -43,9 +75,9 @@ export default {
   setup(props) {
     const form = useForm({
       title: props.lesson.title,
-      course_id: props.lesson.course_id,
-      video_url: props.lesson.video_url,
       text_content: props.lesson.text_content,
+      video_url: props.lesson.video_url,
+      course_id: props.lesson.course_id,
     });
 
     const submit = () => {
@@ -54,5 +86,12 @@ export default {
 
     return { form, submit };
   },
+  components: {
+    Link,
+  },
 };
 </script>
+
+<style scoped>
+/* Add any component-specific styles here */
+</style>

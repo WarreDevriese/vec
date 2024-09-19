@@ -2,16 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Field;
 
 class FieldSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        //
+        Field::create([
+            'track_id' => 1, // Adjust based on your Track IDs
+            'name' => 'Physics',
+            'description' => 'Physics Field',
+        ]);
+
+        Field::create([
+            'track_id' => 2,
+            'name' => 'Painting',
+            'description' => 'Painting Field',
+        ]);
+
+        // Add more fields as needed
     }
 }

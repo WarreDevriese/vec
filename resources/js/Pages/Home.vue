@@ -9,6 +9,7 @@
         <p>{{ track.description }}</p>
       </li>
     </ul>
+    <Link href="/tracks/create" class="text-blue-500 hover:underline">Add New Track</Link>
   </div>
 </template>
 

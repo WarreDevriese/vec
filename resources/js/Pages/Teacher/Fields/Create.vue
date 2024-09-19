@@ -1,10 +1,10 @@
 <template>
   <div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold mb-6">Create New Course</h1>
+    <h1 class="text-3xl font-bold mb-6">Create New Field</h1>
 
     <form @submit.prevent="submit">
       <div class="mb-4">
-        <label for="name" class="block text-gray-700">Course Name</label>
+        <label for="name" class="block text-gray-700">Field Name</label>
         <input
           v-model="form.name"
           type="text"
@@ -27,26 +27,26 @@
       </div>
 
       <div class="mb-4">
-        <label for="field_id" class="block text-gray-700">Field</label>
+        <label for="track_id" class="block text-gray-700">Track</label>
         <select
-          v-model="form.field_id"
-          id="field_id"
+          v-model="form.track_id"
+          id="track_id"
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
           required
         >
-          <option value="" disabled>Select a Field</option>
-          <option v-for="field in fields" :key="field.id" :value="field.id">
-            {{ field.name }}
+          <option value="" disabled>Select a Track</option>
+          <option v-for="track in tracks" :key="track.id" :value="track.id">
+            {{ track.name }}
           </option>
         </select>
-        <span v-if="form.errors.field_id" class="text-red-500 text-sm">{{ form.errors.field_id }}</span>
+        <span v-if="form.errors.track_id" class="text-red-500 text-sm">{{ form.errors.track_id }}</span>
       </div>
 
       <button
         type="submit"
         class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
       >
-        Create Course
+        Create Field
       </button>
     </form>
   </div>
@@ -58,17 +58,17 @@ import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
   props: {
-    fields: Array,
+    tracks: Array,
   },
   setup() {
     const form = useForm({
       name: '',
       description: '',
-      field_id: '',
+      track_id: '',
     });
 
     const submit = () => {
-      form.post('/courses');
+      form.post('/fields');
     };
 
     return { form, submit };

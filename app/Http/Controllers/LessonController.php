@@ -6,12 +6,10 @@ use Illuminate\Http\Request;
 
 class LessonController extends Controller
 {
-    public function show(\App\Models\Course $course)
+    public function show(\App\Models\Lesson $lesson)
     {
-        $course->load('lessons');
-
-        return \Inertia\Inertia::render('Courses/Show', [
-            'course' => $course,
+        return \Inertia\Inertia::render('Lessons/Show', [
+            'lesson' => $lesson,
         ]);
     }
 }
