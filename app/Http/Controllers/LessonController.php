@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class LessonController extends Controller
 {
-    public function show(\App\Models\Lesson $lesson)
+    /**
+     * Display the specified lesson.
+     *
+     * @param  \App\Models\Lesson  $lesson
+     * @return \Inertia\Response
+     */
+    public function show(Lesson $lesson)
     {
-        return \Inertia\Inertia::render('Lessons/Show', [
+        // Load associated course with necessary fields
+        $lesson->load(['course' => function ($query) {
+            $query->select('id', 'name');
+        }]);
+
+        return Inertia::render('Lessons/Show', [
             'lesson' => $lesson,
         ]);
     }
