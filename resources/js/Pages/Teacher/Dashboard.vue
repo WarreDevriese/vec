@@ -6,15 +6,11 @@
       <div class="bg-white shadow rounded p-4">
         <h2 class="text-xl font-semibold mb-2">Manage Tracks</h2>
         <Link href="/tracks" class="text-blue-500 hover:underline">View Tracks</Link>
-        <br />
-        <Link href="/tracks/create" class="text-blue-500 hover:underline">Create New Track</Link>
       </div>
 
       <div class="bg-white shadow rounded p-4">
         <h2 class="text-xl font-semibold mb-2">Manage Fields</h2>
         <Link href="/fields" class="text-blue-500 hover:underline">View Fields</Link>
-        <br />
-        <Link href="/fields/create" class="text-blue-500 hover:underline">Create New Field</Link>
       </div>
 
       <div class="bg-white shadow rounded p-4">
