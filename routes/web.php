@@ -43,12 +43,15 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 // ------------------------------
-// Student Routes (Publicly Accessible)
+// Teacher Routes (Manage Courses and Lessons)
 // ------------------------------
-Route::get('/tracks/{track}', [TrackController::class, 'show'])->name('tracks.show');
-Route::get('/fields/{field}', [FieldController::class, 'show'])->name('fields.show');
-Route::get('/courses/{course}', [StudentCourseController::class, 'show'])->name('courses.show');
-Route::get('/lessons/{lesson}', [StudentLessonController::class, 'show'])->name('lessons.show');
+Route::middleware(['auth', 'teacher'])->group(function () {
+    // Courses Management Routes
+    Route::resource('courses', TeacherCourseController::class)->except(['show']);
+
+    // Lessons Management Routes
+    Route::resource('lessons', TeacherLessonController::class)->except(['show']);
+});
 
 // ------------------------------
 // Dashboard Route
@@ -68,18 +71,14 @@ Route::middleware('auth')->group(function () {
 });
 
 // ------------------------------
-// Teacher Routes (Manage Courses and Lessons)
+// Student Routes (Publicly Accessible)
 // ------------------------------
-Route::middleware(['auth', 'teacher'])->group(function () {
-    // Courses Management Routes
-    Route::resource('courses', TeacherCourseController::class)->except(['show']);
-
-    // Lessons Management Routes
-    Route::resource('lessons', TeacherLessonController::class)->except(['show']);
-});
+Route::get('/tracks/{track}', [TrackController::class, 'show'])->name('tracks.show');
+Route::get('/fields/{field}', [FieldController::class, 'show'])->name('fields.show');
+Route::get('/courses/{course}', [StudentCourseController::class, 'show'])->name('courses.show');
+Route::get('/lessons/{lesson}', [StudentLessonController::class, 'show'])->name('lessons.show');
 
 // ------------------------------
 // Authentication Routes
 // ------------------------------
 require __DIR__ . '/auth.php';
-
