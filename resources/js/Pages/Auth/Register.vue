@@ -1,30 +1,9 @@
-<script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
-
-const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
-});
-
-const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
-};
-</script>
-
 <template>
     <GuestLayout>
         <Head title="Register" />
 
         <form @submit.prevent="submit">
+            <!-- Name Field -->
             <div>
                 <InputLabel for="name" value="Name" />
 
@@ -41,6 +20,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
+            <!-- Email Field -->
             <div class="mt-4">
                 <InputLabel for="email" value="Email" />
 
@@ -56,6 +36,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
+            <!-- Password Field -->
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />
 
@@ -71,6 +52,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
+            <!-- Confirm Password Field -->
             <div class="mt-4">
                 <InputLabel for="password_confirmation" value="Confirm Password" />
 
@@ -86,6 +68,25 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
+            <!-- Role Selection Field -->
+            <div class="mt-4">
+                <InputLabel for="role" value="Register As" />
+
+                <select
+                    id="role"
+                    v-model="form.role"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                    required
+                >
+                    <option value="" disabled>Select a role</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                </select>
+
+                <InputError class="mt-2" :message="form.errors.role" />
+            </div>
+
+            <!-- Register Button and Login Link -->
             <div class="flex items-center justify-end mt-4">
                 <Link
                     :href="route('login')"
@@ -101,3 +102,30 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+
+<script setup>
+import GuestLayout from '@/Layouts/GuestLayout.vue';
+import InputError from '@/Components/InputError.vue';
+import InputLabel from '@/Components/InputLabel.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
+import TextInput from '@/Components/TextInput.vue';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+
+const form = useForm({
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+    role: '', // Added role field
+});
+
+const submit = () => {
+    form.post(route('register'), {
+        onFinish: () => form.reset('password', 'password_confirmation'),
+    });
+};
+</script>
+
+<style scoped>
+/* Add any component-specific styles here */
+</style>
